@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 5.5.2  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Outstanding" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="568b267c-774d-42da-a736-c0bd362e28c8">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DB2"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="startdate" class="java.lang.Integer"/>
+	<parameter name="enddate" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT MAX(    BRLDTA0100.TSG_TRANLS.TRATGDT) AS TRA_Date,    BRLDTA0100.TSG_TRANLS.TRASUNO, 
+    BRLDTA0100.TSG_OWNERLS.OWNNAME,  SUBSTR(    BRLDTA0100.TSG_TRANLS.TRADESC, 22) AS TRADESC,     BRLDTA0100.TSG_TRANLS.TRATYPE, 
+    BRLDTA0100.TSG_TRANLS.TRATGTY,     BRLDTA0100.TSG_OWNERLS.OWNGAMT, MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT) 
+AS TRASAMT_old,     BRLDTA0100.TSG_OWNERLS.OWNGAMT - MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT) AS AMT_old,
+case when (    BRLDTA0100.TSG_OWNERLS.OWNGAMT < MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT)) then (MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT)-((MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT)-    BRLDTA0100.TSG_OWNERLS.OWNGAMT))) else (MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT)) end AS TRASAMT,
+case when (    BRLDTA0100.TSG_OWNERLS.OWNGAMT < MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT)) then (0) else (    BRLDTA0100.TSG_OWNERLS.OWNGAMT - MAX(    BRLDTA0100.TSG_TRANLS.TRASAMT)) end AS AMT
+FROM     BRLDTA0100.TSG_TRANLS,     BRLDTA0100.TSG_OWNERLS
+WHERE     BRLDTA0100.TSG_TRANLS.TRASUNO =     BRLDTA0100.TSG_OWNERLS.OWNSUNO AND 
+    BRLDTA0100.TSG_TRANLS.TRATYPE =     BRLDTA0100.TSG_OWNERLS.OWNTYPE 
+AND (    BRLDTA0100.TSG_TRANLS.TRATGTY = '1') AND (    BRLDTA0100.TSG_TRANLS.tratgdt BETWEEN $P{startdate} AND $P{enddate}) AND     BRLDTA0100.TSG_OWNERLS.OWNGSTS='0'
+GROUP BY     BRLDTA0100.TSG_TRANLS.TRASUNO,     BRLDTA0100.TSG_OWNERLS.OWNNAME,     BRLDTA0100.TSG_TRANLS.TRADESC,    BRLDTA0100.TSG_TRANLS.TRATYPE,    BRLDTA0100.TSG_TRANLS.TRATGTY,     BRLDTA0100.TSG_OWNERLS.OWNGAMT
+HAVING (    BRLDTA0100.TSG_TRANLS.TRATYPE = '2')
+ORDER BY     BRLDTA0100.TSG_TRANLS.TRASUNO]]>
+	</queryString>
+	<field name="TRA_DATE" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TRA_DATE"/>
+	</field>
+	<field name="TRASUNO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TRASUNO"/>
+	</field>
+	<field name="OWNNAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="OWNNAME"/>
+	</field>
+	<field name="TRADESC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TRADESC"/>
+	</field>
+	<field name="TRATYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TRATYPE"/>
+	</field>
+	<field name="TRATGTY" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="TRATGTY"/>
+	</field>
+	<field name="OWNGAMT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="OWNGAMT"/>
+	</field>
+	<field name="TRASAMT_OLD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TRASAMT_OLD"/>
+	</field>
+	<field name="AMT_OLD" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="AMT_OLD"/>
+	</field>
+	<field name="TRASAMT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="TRASAMT"/>
+	</field>
+	<field name="AMT" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="AMT"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement x="135" y="0" width="285" height="30" uuid="4a81fe7e-86c8-4919-86da-080bbb958da3"/>
+				<textElement textAlignment="Center">
+					<font fontName="TH SarabunPSK" size="26" isBold="true"/>
+				</textElement>
+				<text><![CDATA[อาหารสัตว์]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="44" width="52" height="30" uuid="0ae6112e-abdd-44ce-a882-5efa5f08af29"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="19"/>
+				</textElement>
+				<text><![CDATA[ช่วงวันที่:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="250" y="44" width="50" height="30" uuid="4728a629-3c27-49ab-a490-b3ddb7b8844b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{startdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="311" y="44" width="100" height="30" uuid="7c5076d7-8f62-4df4-93a0-32bcf6ad8ffb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="22"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{enddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="300" y="44" width="11" height="30" uuid="b8f74cf4-7477-4e87-91c8-10b023c2ddf0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="TH SarabunPSK" size="22"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="550" height="30" uuid="7d2307d0-194b-48d4-92cb-7c15c48ebea1"/>
+			</frame>
+			<staticText>
+				<reportElement x="0" y="0" width="70" height="30" uuid="7bbc9247-b1eb-4969-933a-bc4f449c5422"/>
+				<textElement>
+					<font fontName="TH SarabunPSK" size="19"/>
+				</textElement>
+				<text><![CDATA[รหัส]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="168" height="30" uuid="ed211611-7268-4e68-8d25-1e32ef754cab"/>
+				<text><![CDATA[ชื่อ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="238" y="0" width="142" height="30" uuid="860f9e76-b725-404a-bc8a-9eb1846544fb"/>
+				<text><![CDATA[ประเภท]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="60" height="30" uuid="addf30d5-77ee-4dac-bcc1-b37faafeeae4"/>
+				<text><![CDATA[ยอดรวม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="60" height="30" uuid="5ec5e21c-1ca0-4c31-a698-2e0ed02e7deb"/>
+				<text><![CDATA[สะสม]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="50" height="30" uuid="d198062b-261b-4b7a-bce9-faf4c9f1a7dd"/>
+				<text><![CDATA[ขาด]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="30" uuid="88c65664-d29b-4020-b870-d76cbb38f155">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="63f0c975-1878-40a9-bef2-1391ad010875"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TRASUNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="168" height="30" uuid="f984428b-bea2-4c21-87ea-0752dfcdddc5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="38acd66c-ec29-408c-9477-b26db9858251"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{OWNNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="238" y="0" width="142" height="30" uuid="f3cb9c2b-e9ad-4edd-9dbf-e14d2d77382c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e44bfdd-8624-4b23-891e-424d6ab8488d"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TRADESC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
+				<reportElement x="380" y="0" width="60" height="30" uuid="63de1ca2-cec9-417e-b8b6-d62140e093a5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f5d37eb-a350-471b-96d9-dc2268cb2f0a"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{OWNGAMT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
+				<reportElement x="440" y="0" width="60" height="30" uuid="4deac6a9-7016-438a-989c-afa2b622aafa">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e03f9312-b595-4b10-83da-8fff09b4cce0"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{TRASAMT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)">
+				<reportElement x="500" y="0" width="50" height="30" uuid="7056fddf-3a21-477b-afb0-21cfa13d814b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="97cf3947-9503-4f09-987e-a2bc16db75c7"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{AMT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
